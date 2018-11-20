@@ -26,7 +26,7 @@ export class Rchoices {
         a.onkeyup = (e) => {
             this._ajax(e.target,rch);
         }
-        
+        rch.remove();
     }
     getList(jsonData,el) {
         let rch = this;
@@ -51,10 +51,28 @@ export class Rchoices {
                 o.text = text
                 o.selected = true;
                 bdy.querySelector(this._e).appendChild(o);
+                rch.remove();
             }            
         }
     }
-    getBox() {
+    remove(){
+        if(bdy.querySelector('.rchoices_btn')) {
+            let x = bdy.querySelectorAll('.rchoices_btn');
+            for(let i=0; i<x.length; i++) {
+                x[i].onclick = () => {
+                    let el = x[i].parentElement;
+                    el.parentElement.removeChild(el);
+                    let s = bdy.querySelector(this._e);
+                    let o = s.options;
+                    for(let i=0;i<o.length;i++) {
+                        if(o[i].value == el.getAttribute('data-value'))
+                            s.remove(i);
+                    }
+                }
+            }
+        }
+    }
+    getBox(){
         let element = new Element;
         let el = element.create('DIV');
         el.classList.add('rchoices-inner');
@@ -120,4 +138,3 @@ export class Rchoices {
         return a;  
     }
 }
-export
